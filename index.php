@@ -1,45 +1,5 @@
 <?php include 'settings.php'; ?>
 
-<?php
-
-$repo = 'Killk4/money';
-$branch = 'master';
-$token = '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';
-$opts = [
-    'http' => [
-        'method' => 'GET',
-        'header' => [
-            'User-Agent: PHP',
-            'Authorization: token ' . $token
-        ]
-    ]
-];
-$context = stream_context_create($opts);
-$remote = json_decode(file_get_contents("https://api.github.com/repos/$repo/branches/$branch", false, $context), true);
-
-$remote_sha = $remote['commit']['sha']; 
-$remote_sha = str_replace(" ", "", $remote_sha);
-$remote_sha = strval($remote_sha);
-$remote_sha = trim($remote_sha);
-
-$local_sha = file_get_contents("./.git/refs/heads/$branch");
-$local_sha = str_replace(" ", "", $local_sha);
-$local_sha = strval($local_sha);
-$local_sha = trim($local_sha);
-
-if ($remote_sha !== $local_sha) {
-    echo $remote_sha;
-    echo '<br>' . $local_sha . '<br>' ;
-    if (isset($_GET['update']) && $_GET['update'] == 'yes') {
-        exec("git pull");
-        echo "Репозиторий обновлен";
-    } else {
-        echo "Обновление доступно. <a href='?update=yes'>Обновить</a>";
-    }
-}
-
-?>
-
 <div style="float: left; border: black 1px solid; margin-right: 5px; padding: 5px;">
 
 <?php
