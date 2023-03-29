@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+    var logotype = '                                                                               \n'+
+    'For                                                                            \n'+
+    ' .oooooo..o oooo    oooo oooooooooooo ooooo      ooo oooo    oooo   .oooooo.   \n'+
+    'd8P\'    `Y8 `888   .8P\'  `888\'     `8 `888b.     `8\' `888   .8P\'   d8P\'  `Y8b  \n'+
+    'Y88bo.       888  d8\'     888          8 `88b.    8   888  d8\'    888          \n'+
+    ' `"Y8888o.   88888[       888oooo8     8   `88b.  8   88888[      888          \n'+
+    '     `"Y88b  888`88b.     888    "     8     `88b.8   888`88b.    888          \n'+
+    'oo     .d8P  888  `88b.   888          8       `888   888  `88b.  `88b    ooo  \n'+
+    '8""88888P\'  o888o  o888o o888o        o8o        `8  o888o  o888o  `Y8bood8P\'  \n'+
+    '                                                                               \n'+
+    'with Love <3                                                                   ';
+
+    console.log(logotype);
+    setTimeout(() => {  console.clear(); }, 10000);
+
     $('body input:radio').prop('checked', false);
     $('body input:checkbox').prop('checked', false);
 
