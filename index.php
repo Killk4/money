@@ -4,13 +4,13 @@
 
 <?php
 
-$qu = mysqli_query($link_s_main, "SELECT * FROM personal WHERE PARENT_ID = 675 OR NAME = 'Сергеев Максим Игоревич'");
+$qu = mysqli_query($link_s_main, "SELECT * FROM personal WHERE PARENT_ID = 675 OR NAME = 'Сергеев Максим Игоревич' OR NAME = 'Шпота Галина Владимировна'");
 
 while ($data = mysqli_fetch_assoc($qu) ) {
     
     $hex = mysqli_query($link_s_main_nu, "SELECT HEX(CODEKEY) FROM personal WHERE id = ". $data['ID']);
     while ($row = mysqli_fetch_assoc($hex) ) {
-        if ($data['NAME'] == 'Сергеев Максим Игоревич') {
+        if ($data['NAME'] == 'Сергеев Максим Игоревич' OR $data['NAME'] == 'Шпота Галина Владимировна') {
             echo '<b><u><input type="checkbox" id="'.$row['HEX(CODEKEY)'].'" value="'.$data['ID'].'" />' . $data['NAME'].'</u></b><br>';
         } else {
             echo '<input type="checkbox" id="'.$row['HEX(CODEKEY)'].'" value="'.$data['ID'].'" />' . $data['NAME'].'<br>';
