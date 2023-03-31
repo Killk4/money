@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    var check_enter = 0;
+
     var logotype = '                                                                               \n'+
     'For                                                                            \n'+
     ' .oooooo..o oooo    oooo oooooooooooo ooooo      ooo oooo    oooo   .oooooo.   \n'+
@@ -15,8 +17,8 @@ $(document).ready(function () {
     console.log(logotype);
     setTimeout(() => {  console.clear(); }, 10000);
 
-    $('body input:radio').prop('checked', false);
-    $('body input:checkbox').prop('checked', false);
+    // $('body input:radio').prop('checked', false);
+    // $('body input:checkbox').prop('checked', false);
 
     function getRandomInt(max) {
         return Math.floor(Math.random() * max);
@@ -38,7 +40,7 @@ $(document).ready(function () {
 
         var dt = new Date();
 
-        var year  = dt.getFullYear();                           // Текущий год
+        var year  = data[12]+data[13]+data[14]+data[15];        // Год
         
         var array_date = new Array;
 
@@ -83,44 +85,80 @@ $(document).ready(function () {
                     out_time = out_time.replace(':', '');
                     event_date = event_date.split('-');
 
-                    var date_mon = in_time + event_date[2] + event_date[1] + out_time;
+                    var date_mon = in_time + event_date[2] + event_date[1] + out_time + event_date[0];
 
                     var date_gen = generation_date(date_mon);
                     var hex_id   = $(this).attr('id');
 
-                    qu_in  = "INSERT INTO `tc-db-log`.`logs` (`LOGTIME`, `AREA`, `LOGDATA`, `EMPHINT`, `DEVHINT`) VALUES ('"+date_gen[0]+"', '0', 0xFE060015020500000048"+hex_id+"FFFF, '"+$(this).val()+"', '"+radio+"')";
-                    qu_out = "INSERT INTO `tc-db-log`.`logs` (`LOGTIME`, `AREA`, `LOGDATA`, `EMPHINT`, `DEVHINT`) VALUES ('"+date_gen[1]+"', '0', 0xFE060015010500000048"+hex_id+"FFFF, '"+$(this).val()+"', '"+radio+"')";
-
-                    console.log(qu_in);
-                    console.log(qu_out);
-
-                    var tdb = $('#to_base').val();
-
-                    if (tdb == '1') {
-                        
-                        $.ajax({
-                            type: "POST",
-                            url: "./new_log.php",
-                            data: {data_qu:qu_in},
-                            success: function (data) {
+                    $.ajax({
+                        type: "POST",
+                        url: "./check_time.php",
+                        data: {'data':1, 'dtime':date_gen[0], 'point':radio},
+                        async: false,
+                        success: function(data){
+                            if(data == 200) {
+                                console.log('Отличное время для входа');
+                                check_enter = check_enter + 1;
+                            }else{
+                                alert('Пересечение времени на вход!');
                             }
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: "./new_log.php",
-                            data: {data_qu:qu_out},
-                            success: function (data) {
-                            }
-                        });
-
                         }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "./check_time.php",
+                        data: {'data':1, 'dtime':date_gen[1], 'point':radio},
+                        async: false,
+                        success: function(data){
+                            if(data == 200) {
+                                console.log('Отличное время для выхода');
+                                check_enter = check_enter + 1;
+                            }else{
+                                alert('Пересечение времени на выход!');
+                            }
+                        }
+                    });
+
+                    if(check_enter < 2){
+                        console.error('Попробуй использовать другое время');
+                        console.error(check_enter);
+                    }else{
+
+                        qu_in  = "INSERT INTO `tc-db-log`.`logs` (`LOGTIME`, `AREA`, `LOGDATA`, `EMPHINT`, `DEVHINT`) VALUES ('"+date_gen[0]+"', '0', 0xFE060015020500000048"+hex_id+"FFFF, '"+$(this).val()+"', '"+radio+"')";
+                        qu_out = "INSERT INTO `tc-db-log`.`logs` (`LOGTIME`, `AREA`, `LOGDATA`, `EMPHINT`, `DEVHINT`) VALUES ('"+date_gen[1]+"', '0', 0xFE060015010500000048"+hex_id+"FFFF, '"+$(this).val()+"', '"+radio+"')";
+
+                        console.log(qu_in);
+                        console.log(qu_out);
+
+                        var tdb = $('#to_base').val();
+
+                        if (tdb == '1') {
+                            
+                            $.ajax({
+                                type: "POST",
+                                url: "./new_log.php",
+                                data: {data_qu:qu_in},
+                                success: function (data) {
+                                }
+                            });
+
+                            $.ajax({
+                                type: "POST",
+                                url: "./new_log.php",
+                                data: {data_qu:qu_out},
+                                success: function (data) {
+                                }
+                            });
+
+                            }
                 
+                    }
+
                 });
             
             });
 
-            alert('Успешно!')
         }
 
     });
