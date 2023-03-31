@@ -61,6 +61,11 @@ while ($data = mysqli_fetch_assoc($qu) ) {
     <tr>
         <td colspan="2"><input type="button" id="insert_mon" value="Готово" style="width: 100%;"></td>
     </tr>
+
+    <tr>
+        <td>Запрос в базу</td>
+        <td><input type="range" name="to_base" id="to_base" min="0" max="1" value="0"></td>
+    </tr>
 </table>
 
     <!-- <div style="border: black 1px solid; padding: 5px;">
