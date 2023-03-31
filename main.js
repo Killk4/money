@@ -60,6 +60,10 @@ $(document).ready(function () {
         return array_date;
     }
 
+    $('#in_time').on('propertychange change paste input', function() {
+        $('#out_time').attr('min', $('#in_time').val());
+    });
+
     $('#insert_mon').click(function() {
 
         let confirm_insert = confirm("Ты уверен?");
@@ -71,7 +75,17 @@ $(document).ready(function () {
                 var radio = $(this).val();
                 $('input:checkbox:checked').each(function(){
 
-                    var date_gen = generation_date($('#date_mon').val());
+                    var in_time = $('#in_time').val();
+                    var out_time = $('#out_time').val();
+                    var event_date = $('#event_day').val();
+
+                    in_time = in_time.replace(':', '');
+                    out_time = out_time.replace(':', '');
+                    event_date = event_date.split('-');
+
+                    var date_mon = in_time + event_date[2] + event_date[1] + out_time;
+
+                    var date_gen = generation_date(date_mon);
                     var hex_id   = $(this).attr('id');
 
                     qu_in  = "INSERT INTO `tc-db-log`.`logs` (`LOGTIME`, `AREA`, `LOGDATA`, `EMPHINT`, `DEVHINT`) VALUES ('"+date_gen[0]+"', '0', 0xFE060015020500000048"+hex_id+"FFFF, '"+$(this).val()+"', '"+radio+"')";

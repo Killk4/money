@@ -42,9 +42,27 @@ while ($data = mysqli_fetch_assoc($qu) ) {
 
 <div style="float: left; border: black 1px solid; margin-right: 5px; padding: 5px;">
 
-<input type="text" id="date_mon" style='width: 300px;'> <br><br>
+<table>
+    <tr>
+        <td>День:</td>
+        <td><input type="date" name="event_day" id="event_day"></td>
+    </tr>
 
-<input type="button" id="insert_mon" value="Готово" style="width: 150px;"> <input type="button" id="kd" value="Конструктор дат" disabled="disabled" style="width: 150px;"> <br><br>
+    <tr>
+        <td>Время входа:</td>
+        <td><input type="time" name="in_time" id="in_time" style="width: 100%;"></td>
+    </tr>
+
+    <tr>
+        <td>Время выхода:</td>
+        <td><input type="time" name="out_time" id="out_time" style="width: 100%;"></td>
+    </tr>
+
+    <tr>
+        <td colspan="2"><input type="button" id="insert_mon" value="Готово" style="width: 100%;"></td>
+    </tr>
+</table>
+
     <!-- <div style="border: black 1px solid; padding: 5px;">
         <input type="checkbox" disabled="disabled"> Запланировать
         <p style="font-size: 10px;">Сработает через 3 секунды после запланированного времени</p>
