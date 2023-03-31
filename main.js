@@ -94,21 +94,27 @@ $(document).ready(function () {
                     console.log(qu_in);
                     console.log(qu_out);
 
-                    /*$.ajax({
-                        type: "POST",
-                        url: "./new_log.php",
-                        data: {data_qu:qu_in},
-                        success: function (data) {
-                        }
-                    });
+                    var tdb = $('#to_base').val();
 
-                    $.ajax({
-                        type: "POST",
-                        url: "./new_log.php",
-                        data: {data_qu:qu_out},
-                        success: function (data) {
+                    if (tdb == '1') {
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: "./new_log.php",
+                            data: {data_qu:qu_in},
+                            success: function (data) {
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: "./new_log.php",
+                            data: {data_qu:qu_out},
+                            success: function (data) {
+                            }
+                        });
+
                         }
-                    }); */
                 
                 });
             
